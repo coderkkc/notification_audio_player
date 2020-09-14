@@ -1,8 +1,7 @@
 name: notification_audio_player
-description: A new flutter plugin project.
-version: 0.0.1
-author:
-homepage:
+description: audio player with notification(only support android)
+version: 1.1.0
+repository: https://github.com/coderkkc/notification_audio_player.git
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

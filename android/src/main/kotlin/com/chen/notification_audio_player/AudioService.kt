@@ -135,7 +135,9 @@ class AudioService : Service(){
     fun initMediaPlayer() {
         mediaPlayer = MediaPlayer()
         mediaSessionCompat = MediaSessionCompat(this, "audio_service")
-        stateBuilder = PlaybackStateCompat.Builder().setActions(MEDIA_SESSION_ACTIONS)
+        stateBuilder = PlaybackStateCompat.Builder()
+            .setActions(MEDIA_SESSION_ACTIONS)
+            .setState(PlaybackState.STATE_NONE, 0, 1.0f)
         registerReceiver(myNoisyAudioStreamReceiver, intentFilter)
 
         mediaSessionCompat.apply {
@@ -201,6 +203,7 @@ class AudioService : Service(){
                     .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer.duration.toLong())
                 mediaSessionCompat.setMetadata(mediaMetadataCompat.build())
                 stateBuilder.setState(PlaybackState.STATE_PLAYING, mediaPlayer.currentPosition.toLong(), 1.0f)
+
                 mediaSessionCompat.setPlaybackState(stateBuilder.build())
                 // 回调歌曲当前currentPosition
                 if (!isFirstRun) {
@@ -241,6 +244,7 @@ class AudioService : Service(){
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setPriority(Notification.PRIORITY_HIGH)
             .setWhen(System.currentTimeMillis())
+            .setShowWhen(false)
             .setContentIntent(pendingIntent)
             .setSmallIcon(getResourceId("mipmap/ic_launcher"))
             .setVibrate(longArrayOf(0))

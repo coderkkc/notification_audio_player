@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:notification_audio_player/notification_audio_player.dart';
 
 void main() {
@@ -14,41 +11,40 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
   NotificationAudioPlayer notificationAudioPlayer = NotificationAudioPlayer();
 
   @override
   void initState() {
     super.initState();
     notificationAudioPlayer.onCompleteEvent.listen((event) {
-      print("播放完成");
+      print("complete");
     });
     notificationAudioPlayer.onResumeEvent.listen((event) {
-      print("恢复");
+      print("resume");
     });
     notificationAudioPlayer.onPauseEvent.listen((event) {
-      print("暂停");
+      print("pause");
     });
     notificationAudioPlayer.onStopEvent.listen((event) {
-      print("停止");
+      print("stop");
     });
     notificationAudioPlayer.switchPreviousEvent.listen((event) {
-      print("上一首");
+      print("switch previous");
     });
     notificationAudioPlayer.switchNextEvent.listen((event) {
-      print("下一首");
+      print("swtich next");
     });
     notificationAudioPlayer.curPosEvent.listen((data) {
-//      print('当前进度 $data');
+      print('current position: $data');
     });
     notificationAudioPlayer.preparedDurationEvent.listen((data) {
-      print("播放时间 $data");
+      print("duration: $data");
     });
     notificationAudioPlayer.headPhoneOutEvent.listen((event) {
-      print("耳机拔出");
+      print("headphone out");
     });
     notificationAudioPlayer.headPhoneInEvent.listen((event) {
-      print("耳机插入");
+      print("headphone in");
     });
   }
 
@@ -57,10 +53,50 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Notification Audio Player'),
         ),
         body: Center(
           child: Column(children: [
+            RaisedButton(
+              child: Text('Play'),
+              onPressed: () async{
+                String title = "Shape of Yo";
+                String author = "J.Fla";
+                String avatar = "http://p3.music.126.net/hZ2ttGYOQbL9ei9yABpejQ==/109951163032775841.jpg?param=320y320";
+                String url = "https://music.163.com/song/media/outer/url?id=468882985.mp3";
+                print(await notificationAudioPlayer.play(title, author, avatar, url));
+              },
+            ),
+            RaisedButton(
+              child: Text('pause'),
+              onPressed: () async{
+                print(await notificationAudioPlayer.pause());
+              },
+            ),
+            RaisedButton(
+              child: Text('resume'),
+              onPressed: () async{
+                print(await notificationAudioPlayer.resume());
+              },
+            ),
+            RaisedButton(
+              child: Text('stop'),
+              onPressed: () async{
+                print(await notificationAudioPlayer.stop());
+              },
+            ),
+            RaisedButton(
+              child: Text('release'),
+              onPressed: () async{
+                print(await notificationAudioPlayer.release());
+              },
+            ),
+            RaisedButton(
+              child: Text('removeNotification'),
+              onPressed: () async{
+                print(await notificationAudioPlayer.removeNotification());
+              },
+            ),
             RaisedButton(
               child: Text('getPlayerState'),
               onPressed: () async{
@@ -107,49 +143,6 @@ class _MyAppState extends State<MyApp> {
               child: Text('seek'),
               onPressed: () async{
                 print(await notificationAudioPlayer.seek(10000));
-              },
-            ),
-            RaisedButton(
-              child: Text('Play'),
-              onPressed: () async{
-                String title = "点歌的人";
-                String author = "海来阿木";
-                String avatar = "https://d.musicapp.migu.cn/prod/file-service/file-down/b1899d500dda5db2da11df3efc89cba6/d210e36411266f0305ada5026f041997/3856873e38b7e5c7e41c1a8cd725c18a";
-                String url = "http://freetyst.nf.migu.cn/public/product9th/product41/2020/08/1013/2020年04月07日11点20分紧急内容准入众立文化2首/标清高清/MP3_128_16_Stero/63299100635132217.mp3";
-                print(await notificationAudioPlayer.play(title, author, avatar, url));
-//                print(await notificationAudioPlayer.playerState);
-//                print(await notificationAudioPlayer.duration);
-//                print(await notificationAudioPlayer.currentPosition);
-              },
-            ),
-            RaisedButton(
-              child: Text('pause'),
-              onPressed: () async{
-                print(await notificationAudioPlayer.pause());
-              },
-            ),
-            RaisedButton(
-              child: Text('resume'),
-              onPressed: () async{
-                print(await notificationAudioPlayer.resume());
-              },
-            ),
-            RaisedButton(
-              child: Text('stop'),
-              onPressed: () async{
-                print(await notificationAudioPlayer.stop());
-              },
-            ),
-            RaisedButton(
-              child: Text('release'),
-              onPressed: () async{
-                print(await notificationAudioPlayer.release());
-              },
-            ),
-            RaisedButton(
-              child: Text('removeNotification'),
-              onPressed: () async{
-                print(await notificationAudioPlayer.removeNotification());
               },
             ),
           ],)
